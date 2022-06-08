@@ -27,7 +27,7 @@ def start(update, context: CallbackContext):
 
 def help(update, context):
 	
-	context.bot.send_message(update.message.chat_id, "------------BIENVENIDOS----------- \n *************Comandos*************  \n ***************************************** \n /ingresar_salario Podras guardar en tu base de datos tus ingresos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_salario 10000000 comision 2022-04-02 greisy \n ***************************************** \n /ingresar_gasto Podras guardar en tu base de datos tus gastos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_gasto 1000 shampoo 2022-06-01 Oneyda \n ***************************************** \n /ingresos_por_mes Permitira saber todos los ingresos del mes actual. \n ***************************************** \n /ingresos_suma Mostrara el resultado de la suma de todos los ingresos. \n ***************************************** \n /gastos_suma Mostrara el resultado de la suma de todos los gastos. \n ***************************************** \n /gastos_por_mes Podras ver todos los gastos que has realizado. \n ***************************************** \n /excel_ingreso crea un archivo excel con los ingresos \n ***************************************** \n /excel_gasto crea un archivo excel con los gastos \n ***************************************** \n /grafica_barras_ingreso Mostrara un excel con un grafico de los ingresos que has realizado \n *****************************************\n /grafica_barras_gastos Mostrara un excel con un grafico de los gastos que has realizado. \n ***************************************** \n /grafica_pie_ingreso Mostrara un excel con un grafico de los ingresos que has realizado. \n ********************************** \n /grafica_pie_gastos Mostrara un excel con un grafico de los gastos que has realizado.")
+	context.bot.send_message(update.message.chat_id, "------------BIENVENIDOS----------- \n *************Comandos*************  \n ***************************************** \n /ingresar_salario Podras guardar en tu base de datos tus ingresos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_salario 10000000 comision 2022-04-02 greisy \n ***************************************** \n /ingresar_gasto Podras guardar en tu base de datos tus gastos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_gasto 1000 shampoo 2022-06-01 Oneyda \n ***************************************** \n /ingresos_personalizado Permitira saber todos los ingresos del mes actual. \n ***************************************** \n ***************************************** \n /gastos_personalizados Podras ver todos los gastos que has realizado. \n ***************************************** \n /excel_ingreso crea un archivo excel con los ingresos \n ***************************************** \n /excel_gasto crea un archivo excel con los gastos \n ***************************************** \n /grafica_barras_ingreso Mostrara un excel con un grafico de los ingresos que has realizado \n *****************************************\n /grafica_barras_gastos Mostrara un excel con un grafico de los gastos que has realizado. \n ***************************************** \n /grafica_pie_ingreso Mostrara un excel con un grafico de los ingresos que has realizado. \n ********************************** \n /grafica_pie_gastos Mostrara un excel con un grafico de los gastos que has realizado.")
 
 def ingresar_salario(update,context):
   
@@ -50,7 +50,7 @@ def ingresar_gasto(update,context):
 	cursor.execute("INSERT INTO gastos (id_user,salario,fecha,descripcion,nombre_usuario)VALUES (%s,%s,%s,%s,%s)", (user,cantidad,descripcion,fecha,nombre_usuario))
 	db.commit()
 
-def ingresos_por_mes(update, context):
+def ingresos_personalizado(update, context):
 
 	fecha1 = context.args[0]
 	fecha2 = context.args[1]
@@ -77,7 +77,7 @@ def ingresos_por_mes(update, context):
 	book.save('./static/ingresos/ingresos_mes.xlsx')		
 	context.bot.send_document(update.message.chat_id,document=open("./static/ingresos/ingresos_mes.xlsx","rb"),filename="ingresos_mes.xlsx") 	
 
-def gastos_por_mes(update,context):
+def gastos_personalizados(update,context):
 	user = update.message.from_user.id
 	cursor=db.cursor()
 	cursor.execute("SELECT salario,descripcion,fecha,nombre_usuario FROM gastos where id_user=%s",(user,))
@@ -90,23 +90,6 @@ def gastos_por_mes(update,context):
 		print(database)
 	context.bot.send_message(update.message.chat_id,"Estos son los gastos de este mes  "+texto)    		
     	
-def gastos_suma(update,context ):
-	cursor = db.cursor()
-	cursor.execute("SELECT SUM(salario)AS GASTOS FROM gastos")
-	ingresos_suma=cursor.fetchone()
-	db.commit()
-	
-	context.bot.send_message(update.message.chat_id,"La suma de tus Gastos es: "+str(ingresos_suma[0]))
-def ingresos_suma(update,context):
-
-	user = update.message.from_user.id
-	cursor = db.cursor()
-	cursor.execute("SELECT SUM(salario)AS ingresos_suma FROM ingresos where id_user=%s",(user,))
-	ingresos_suma=cursor.fetchone()
-	db.commit()
-
-	context.bot.send_message(update.message.chat_id,"La suma de tus ingresos es: "+str(ingresos_suma[0]))
-
 def excel_ingreso(update,context):
 	user = update.message.from_user.id
 	cursor = db.cursor()
@@ -243,7 +226,6 @@ def grafica_barras_gastos(update,context):
 	grafica.add_data(texto)
 	sheet.add_chart(grafica, "E15")
 	
-
 	book.save('grafica_barras_gastos.xlsx')
 	context.bot.send_document(update.message.chat_id,document=open("grafica_barras_gastos.xlsx","rb"),filename="grafica_barras_gastos.xlsx")
 
@@ -337,10 +319,8 @@ def main():
 	dp.add_handler(CommandHandler('help',	help))
 	dp.add_handler(CommandHandler('ingresar_salario',	ingresar_salario))
 	dp.add_handler(CommandHandler('ingresar_gasto',	ingresar_gasto))
-	dp.add_handler(CommandHandler('ingresos_por_mes',	ingresos_por_mes))
-	dp.add_handler(CommandHandler('gastos_por_mes', gastos_por_mes))
-	dp.add_handler(CommandHandler('ingresos_suma',	ingresos_suma))
-	dp.add_handler(CommandHandler('gastos_suma',	gastos_suma))
+	dp.add_handler(CommandHandler('ingresos_personalizado',	ingresos_personalizado))
+	dp.add_handler(CommandHandler('gastos_personalizados', gastos_personalizados))
 	dp.add_handler(CommandHandler('excel_ingreso',	excel_ingreso))
 	dp.add_handler(CommandHandler('excel_gasto',	excel_gasto))
 	dp.add_handler(CommandHandler('grafica_barras_ingreso', grafica_barras_ingreso))
@@ -348,7 +328,6 @@ def main():
 	dp.add_handler(CommandHandler('grafica_pie_ingreso', grafica_pie_ingreso))
 	dp.add_handler(CommandHandler('grafica_pie_gastos', grafica_pie_gastos))
 	
-
 	updater.start_polling()
 
 	updater.idle()
