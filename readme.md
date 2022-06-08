@@ -1,4 +1,4 @@
-   Integrantes:
+Integrantes:
 
-Oneyda Pérez
+Oneyda Pérez -
 Greisy Pistala

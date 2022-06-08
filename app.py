@@ -1,3 +1,4 @@
+
 '''
 Bot para telegram
 '''
@@ -7,7 +8,6 @@ import mysql.connector
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
-import time
 from openpyxl.chart import BarChart, Reference, Series, PieChart
 from openpyxl.chart.series import DataPoint
 from telegram.ext.callbackcontext import CallbackContext
@@ -27,7 +27,7 @@ def start(update, context: CallbackContext):
 
 def help(update, context):
 	
-	context.bot.send_message(update.message.chat_id, "------------BIENVENIDOS----------- \n **********Nuestros Comandos**********  \n ***************************************** \n /ingresar_salario Podras guardar en tu base de datos tus ingresos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_salario 10000000 comision 2022-04-02 greisy \n ***************************************** \n /ingresar_gasto Podras guardar en tu base de datos tus gastos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_gasto 1000 shampoo 2022-06-01 Oneyda \n ***************************************** \n /ingresos_por_mes Permitira saber todos los ingresos del mes actual. \n ***************************************** \n /ingresos_suma Mostrara el resultado de la suma de todos los ingresos. \n ***************************************** \n /gastos_suma Mostrara el resultado de la suma de todos los gastos. \n ***************************************** \n /gastos_por_mes Podras ver todos los gastos que has realizado. \n ***************************************** \n /excel_ingreso crea un archivo excel con los ingresos \n ***************************************** \n /excel_gasto crea un archivo excel con los gastos \n ***************************************** \n /grafica_barras_ingreso Mostrara un excel con un grafico de los ingresos que has realizado \n *****************************************\n /grafica_barras_gastos Mostrara un excel con un grafico de los gastos que has realizado. \n ***************************************** \n /grafica_pie_ingreso Mostrara un excel con un grafico de los ingresos que has realizado. \n ********************************** \n /grafica_pie_gastos Mostrara un excel con un grafico de los gastos que has realizado.")
+	context.bot.send_message(update.message.chat_id, "------------BIENVENIDOS----------- \n *************Comandos*************  \n ***************************************** \n /ingresar_salario Podras guardar en tu base de datos tus ingresos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_salario 10000000 comision 2022-04-02 greisy \n ***************************************** \n /ingresar_gasto Podras guardar en tu base de datos tus gastos, ingresa la cantidad, descripcion, fecha y nombre del usuario en seguida del comando correspondiente de la siguiente manera: /ingresar_gasto 1000 shampoo 2022-06-01 Oneyda \n ***************************************** \n /ingresos_por_mes Permitira saber todos los ingresos del mes actual. \n ***************************************** \n /ingresos_suma Mostrara el resultado de la suma de todos los ingresos. \n ***************************************** \n /gastos_suma Mostrara el resultado de la suma de todos los gastos. \n ***************************************** \n /gastos_por_mes Podras ver todos los gastos que has realizado. \n ***************************************** \n /excel_ingreso crea un archivo excel con los ingresos \n ***************************************** \n /excel_gasto crea un archivo excel con los gastos \n ***************************************** \n /grafica_barras_ingreso Mostrara un excel con un grafico de los ingresos que has realizado \n *****************************************\n /grafica_barras_gastos Mostrara un excel con un grafico de los gastos que has realizado. \n ***************************************** \n /grafica_pie_ingreso Mostrara un excel con un grafico de los ingresos que has realizado. \n ********************************** \n /grafica_pie_gastos Mostrara un excel con un grafico de los gastos que has realizado.")
 
 def ingresar_salario(update,context):
   
@@ -62,13 +62,13 @@ def ingresos_por_mes(update, context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
 		sheet[f'B{i+2}'] = value[1]
@@ -92,7 +92,7 @@ def gastos_por_mes(update,context):
     	
 def gastos_suma(update,context ):
 	cursor = db.cursor()
-	cursor.execute("SELECT SUM(salario)AS GASTOS FROM gastos ")
+	cursor.execute("SELECT SUM(salario)AS GASTOS FROM gastos")
 	ingresos_suma=cursor.fetchone()
 	db.commit()
 	
@@ -116,14 +116,15 @@ def excel_ingreso(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Falario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 	for i,value in enumerate(salario):
+
 		sheet[f'A{i+2}'] = value[0]
 		sheet[f'B{i+2}'] = value[1]
 		sheet[f'C{i+2}'] = value[2]
@@ -146,13 +147,13 @@ def excel_gasto(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
 		sheet[f'B{i+2}'] = value[1]
@@ -179,13 +180,13 @@ def grafica_barras_ingreso(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
@@ -196,6 +197,9 @@ def grafica_barras_ingreso(update,context):
 	texto = Reference(sheet, min_col = 1, min_row = 1, max_col = 1, max_row = 10)
 
 	grafica= BarChart()
+	grafica.title = 'Gráfica de Ingresos'
+	grafica.y_axis.title = 'eje Y'
+	grafica.x_axis.title = 'eje X'
 	grafica.add_data(texto)
 	sheet.add_chart(grafica, "E15")
 	
@@ -216,13 +220,13 @@ def grafica_barras_gastos(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
@@ -233,6 +237,9 @@ def grafica_barras_gastos(update,context):
 	texto = Reference(sheet, min_col = 1, min_row = 1, max_col = 1, max_row = 10)
 
 	grafica= BarChart()
+	grafica.title = 'Gráfica de Gastos'
+	grafica.y_axis.title = 'eje Y'
+	grafica.x_axis.title = 'eje X'
 	grafica.add_data(texto)
 	sheet.add_chart(grafica, "E15")
 	
@@ -241,6 +248,7 @@ def grafica_barras_gastos(update,context):
 	context.bot.send_document(update.message.chat_id,document=open("grafica_barras_gastos.xlsx","rb"),filename="grafica_barras_gastos.xlsx")
 
 #---------------------------------grafica de pie------------------------------------------
+
 def grafica_pie_ingreso(update,context):
 	user = update.message.from_user.id  	
 	cursor = db.cursor()
@@ -255,13 +263,13 @@ def grafica_pie_ingreso(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
@@ -272,6 +280,7 @@ def grafica_pie_ingreso(update,context):
 	texto = Reference(sheet, min_col = 1, min_row = 1, max_col = 1, max_row = 10)
 
 	grafica= PieChart()
+	grafica.title = 'Gráfica de Ingresos'
 	grafica.add_data(texto)
 	sheet.add_chart(grafica, "E15")
 	
@@ -292,13 +301,13 @@ def grafica_pie_gastos(update,context):
 	book = Workbook()
 	sheet = book.active
 	
-	sheet['B1'] = 'descripcion'
+	sheet['B1'] = 'Descripcion'
 
-	sheet['C1'] = 'fecha'
+	sheet['C1'] = 'Fecha'
 
-	sheet['A1'] = "salario"
+	sheet['A1'] = "Salario"
 
-	sheet['D1'] = "nombre_usuario"
+	sheet['D1'] = "Nombre del Usuario"
 
 	for i,value in enumerate(salario):
 		sheet[f'A{i+2}'] = value[0]
@@ -308,7 +317,8 @@ def grafica_pie_gastos(update,context):
 
 	texto = Reference(sheet, min_col = 1, min_row = 1, max_col = 1, max_row = 10)
 
-	grafica= BarChart()
+	grafica= PieChart()
+	grafica.title = 'Gráfica de Gastos'
 	grafica.add_data(texto)
 	sheet.add_chart(grafica, "E15")
 	
@@ -338,9 +348,9 @@ def main():
 	dp.add_handler(CommandHandler('grafica_pie_ingreso', grafica_pie_ingreso))
 	dp.add_handler(CommandHandler('grafica_pie_gastos', grafica_pie_gastos))
 	
-	# Comienza el bot
+
 	updater.start_polling()
-	#Evita que se detenga.
+
 	updater.idle()
 
 if __name__ == '__main__':
